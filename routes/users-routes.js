@@ -2,7 +2,7 @@ const { Router } = require('express')
 const { check } = require('express-validator')
 
 const userController = require('../controllers/users-controller')
-const { roleExists, emailExists, userExists } = require('../helpers/db-validators')
+const { emailExists, userExists } = require('../helpers/db-validators')
 const { validateFields, validateJWT } = require('../middlewares/middlewares')
 
 const router = Router()
@@ -18,12 +18,10 @@ router.put('/:id', [
 
 router.post('/', [
   // check for errors and return them if there are any:
-  validateJWT,
   check('name', 'The parameter \'name\' is required').notEmpty(),
   check('email', 'The parameter \'email\' is not valid').isEmail(),
   check('password', 'The parameter \'password\' is required and must contain at least 8 characters').isLength({ min: 8 }),
   check('email').custom(emailExists),
-  check('role').custom(roleExists),
   validateFields
 ], userController.usersPost)
 

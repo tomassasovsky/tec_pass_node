@@ -1,12 +1,4 @@
-const Role = require('../models/role-model')
 const User = require('../models/user-model')
-
-const roleExists = async (role = '') => {
-  const exists = await Role.findOne({ role })
-  if (!exists) {
-    throw new Error(`The Role ${role} is not registered`)
-  }
-}
 
 const emailExists = async (email = '') => {
   const exists = await User.findOne({ email });
@@ -23,7 +15,6 @@ const userExists = async (id = '') => {
 }
 
 module.exports = {
-  roleExists,
   emailExists,
   userExists,
 }
