@@ -9,6 +9,8 @@ const dbConnection = async () => {
       useFindAndModify: false,
     });
 
+    mongoose.set('returnOriginal', false);
+
     console.log('MongoDB connection successful.');
   } catch (err) {
     console.log(err);
