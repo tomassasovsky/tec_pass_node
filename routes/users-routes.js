@@ -13,7 +13,6 @@ router.put('/:id', [
   validateJWT,
   check('id', 'The parameter `id` is not valid').isMongoId(),
   check('id').custom(userExists),
-  check('role').custom(roleExists),
   validateFields
 ], userController.usersPut)
 
@@ -28,13 +27,15 @@ router.post('/', [
   validateFields
 ], userController.usersPost)
 
-router.delete('/:id', [
+router.delete('/', [
   validateJWT,
-  check('id', 'The parameter `id` is not valid').isMongoId(),
-  check('id').custom(userExists),
   validateFields
 ], userController.usersDelete)
 
-router.patch('/', userController.usersPatch)
+router.patch('/', [
+  check('email', 'Email is required').isEmail(),
+  check('password', 'Password is required').not().isEmpty(),
+  validateFields
+], userController.usersPatch)
 
 module.exports = router

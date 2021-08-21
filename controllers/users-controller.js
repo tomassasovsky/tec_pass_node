@@ -33,7 +33,6 @@ const usersPut = async (req = request, res = response) => {
   const { id } = req.params;
   const { _id, password, google, email, ...newData } = req.body;
 
-  // TODO: validate with db
   if (password) {
     // hash password
     const salt = bcryptjs.genSaltSync();
@@ -42,20 +41,37 @@ const usersPut = async (req = request, res = response) => {
 
   const user = await User.findByIdAndUpdate(id, newData);
 
-  res.status(200).json(user)
+  res.status(200).json({ user })
 }
 
 const usersDelete = async (req = request, res = response) => {
-  const { id } = req.params;
-
-  const user = await User.findByIdAndUpdate(id, { status: false });
-  const authenticatedUser = req.user;
+  const user = await User.findByIdAndUpdate(req.user.id, { status: false });
 
   res.status(200).json({ user });
 }
 
-const usersPatch = (req = request, res = response) => {
-  res.status(200).json({})
+const usersPatch = async (req = request, res = response) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(404).json({
+      message: 'User not found'
+    });
+  }
+
+  const validPassword = bcryptjs.compareSync(password, user.password);
+
+  if (!validPassword) {
+    return res.status(401).json({
+      message: 'Password is not correct'
+    });
+  }
+
+  const updatedUser = await User.findOneAndUpdate({ email }, { status: true });
+
+  res.status(200).json({ "user": updatedUser });
 }
 
 module.exports = {
