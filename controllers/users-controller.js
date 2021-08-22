@@ -60,8 +60,12 @@ const usersPatch = async (req = request, res = response) => {
 
   if (!user) {
     return res.status(404).json({
-      msg: 'No se ha encontrado un usuario con este correo',
-      param: 'email',
+      errors: [
+        {
+          msg: 'No se ha encontrado un usuario con este correo',
+          param: 'email',
+        }
+      ]
     });
   }
 
@@ -69,8 +73,12 @@ const usersPatch = async (req = request, res = response) => {
 
   if (!validPassword) {
     return res.status(401).json({
-      msg: 'La contraseña es incorrecta',
-      param: 'password',
+      errors: [
+        {
+          msg: 'La contraseña es incorrecta',
+          param: 'password',
+        }
+      ]
     });
   }
 

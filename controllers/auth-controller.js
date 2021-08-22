@@ -12,14 +12,22 @@ const login = async (req = request, res = response) => {
 
     if (!user) {
       return res.status(400).send({
-        msg: "El correo no está registrado",
-        param: "email",
+        errors: [
+          {
+            msg: "El correo no está registrado",
+            param: "email",
+          },
+        ],
       });
     }
 
     if (!user.status) {
       return res.status(400).send({
-        msg: "El usuario ha sido desactivado",
+        errors: [
+          {
+            msg: "El usuario ha sido desactivado",
+          },
+        ],
       });
     }
 
@@ -27,8 +35,12 @@ const login = async (req = request, res = response) => {
 
     if (!validPassword) {
       return res.status(400).send({
-        msg: "La contraseña es incorrecta",
-        param: "password",
+        errors: [
+          {
+            msg: "La contraseña es incorrecta",
+            param: "password",
+          },
+        ],
       });
     }
 
@@ -42,7 +54,11 @@ const login = async (req = request, res = response) => {
   } catch (err) {
     console.log(err);
     return res.status(500).send({
-      msg: "Algo salió mal",
+      errors: [
+        {
+          msg: "Algo salió mal",
+        },
+      ],
     });
   }
 }

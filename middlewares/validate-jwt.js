@@ -8,8 +8,12 @@ const validateJWT = async (req = request, res = response, next) => {
 
   if (!token) {
     return res.status(401).json({
-      msg: 'El token es obligatorio',
-      param: 'token',
+      errors: [
+        {
+          msg: 'El token es obligatorio',
+          param: 'token',
+        }
+      ],
     })
   }
 
@@ -20,13 +24,21 @@ const validateJWT = async (req = request, res = response, next) => {
 
     if (!user) {
       return res.status(401).json({
-        msg: 'El usuario no existe'
+        errors: [
+          {
+            msg: 'El usuario no existe'
+          }
+        ],
       })
     }
 
     if (!user.status) {
       return res.status(401).json({
-        msg: 'El usuario está desactivado',
+        errors: [
+          {
+            msg: 'El usuario está desactivado',
+          }
+        ],
       });
     }
 
@@ -35,8 +47,12 @@ const validateJWT = async (req = request, res = response, next) => {
     next();
   } catch (error) {
     return res.status(401).json({
-      msg: 'El token no es válido',
-      param: 'token',
+      errors: [
+        {
+          msg: 'El token no es válido',
+          param: 'token',
+        },
+      ],
     });
   }
 }
