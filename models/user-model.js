@@ -10,6 +10,16 @@ const UserSchema = Schema({
     required: [true, 'El correo es obligatorio y no debe estar usado'],
     unique: true,
   },
+  phone: {
+    type: String,
+    required: [true, 'El teléfono es obligatorio y no debe estar usado'],
+    unique: true,
+  },
+  rut: {
+    type: String,
+    required: [true, 'El RUT es obligatorio'],
+    unique: true,
+  },
   password: {
     type: String,
     required: [true, 'La contraseña es obligatoria'],
@@ -20,10 +30,6 @@ const UserSchema = Schema({
   status: {
     type: Boolean,
     default: true,
-  },
-  google: {
-    type: Boolean,
-    default: false,
   },
 });
 

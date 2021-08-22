@@ -7,6 +7,20 @@ const emailExists = async (email = '') => {
   }
 }
 
+const rutExists = async (rut = '') => {
+  const exists = await User.findOne({ rut });
+  if (exists) {
+    throw new Error('Este RUT ya tiene una cuenta vinculada');
+  }
+}
+
+const phoneExists = async (phone = '') => {
+  const exists = await User.findOne({ phone });
+  if (exists) {
+    throw new Error('Este teléfono ya tiene una cuenta vinculada');
+  }
+}
+
 const userExists = async (id = '') => {
   const exists = await User.findById(id);
   if (!exists) {
@@ -16,5 +30,7 @@ const userExists = async (id = '') => {
 
 module.exports = {
   emailExists,
+  rutExists,
+  phoneExists,
   userExists,
 }

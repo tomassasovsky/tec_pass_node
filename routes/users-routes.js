@@ -2,8 +2,10 @@ const { Router } = require('express')
 const { check } = require('express-validator')
 
 const userController = require('../controllers/users-controller')
-const { emailExists, userExists } = require('../helpers/db-validators')
+const { emailExists, rutExists, phoneExists, userExists } = require('../helpers/db-validators')
 const { validateFields, validateJWT } = require('../middlewares/middlewares')
+
+const { rutValid } = require('../helpers/rut-validator')
 
 const router = Router()
 
@@ -20,7 +22,11 @@ router.post('/', [
   // check for errors and return them if there are any:
   check('name', 'El nombre es obligatorio').notEmpty(),
   check('email', 'El correo es obligatorio').isEmail(),
-  check('password', 'La contraseña es obligatorio').isLength({ min: 8 }),
+  check('rut').custom(rutExists),
+  check('rut').custom(rutValid),
+  check('phone', 'El teléfono es obligatorio').notEmpty(),
+  check('phone').custom(phoneExists),
+  check('password', 'La contraseña es obligatoria').isLength({ min: 8 }),
   check('email').custom(emailExists),
   validateFields
 ], userController.usersPost)
