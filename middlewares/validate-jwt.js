@@ -26,7 +26,8 @@ const validateJWT = async (req = request, res = response, next) => {
       return res.status(401).json({
         errors: [
           {
-            msg: 'El usuario no existe'
+            msg: 'El usuario no existe',
+            param: 'email',
           }
         ],
       })
@@ -37,6 +38,7 @@ const validateJWT = async (req = request, res = response, next) => {
         errors: [
           {
             msg: 'El usuario está desactivado',
+            param: 'email',
           }
         ],
       });

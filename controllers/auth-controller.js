@@ -26,6 +26,7 @@ const login = async (req = request, res = response) => {
         errors: [
           {
             msg: "El usuario ha sido desactivado",
+            param: 'email',
           },
         ],
       });
@@ -57,6 +58,7 @@ const login = async (req = request, res = response) => {
       errors: [
         {
           msg: "Algo salió mal",
+          param: 'email',
         },
       ],
     });
