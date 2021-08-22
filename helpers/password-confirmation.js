@@ -1,14 +1,8 @@
-const { request, response } = require("express");
-
-
-const passwordConfirmation = async (req = request, res = response, next) => {
-  const { password, passwordConfirmation } = req.body;
-
-  if (password !== passwordConfirmation) {
+const passwordConfirmation = async (value, { req }) => {
+  const { passwordConfirmation } = req.body;
+  if (value !== passwordConfirmation) {
     throw new Error('· Las contraseñas no coinciden');
   }
-
-  next();
 }
 
 module.exports = {

@@ -1,5 +1,5 @@
 const { Router } = require('express')
-const { check } = require('express-validator')
+const { check, body } = require('express-validator')
 
 const userController = require('../controllers/users-controller')
 const { emailExists, rutExists, phoneExists, userExists } = require('../helpers/db-validators')
@@ -28,7 +28,7 @@ router.post('/', [
   check('phone', '· El teléfono es obligatorio').notEmpty(),
   check('phone').custom(phoneExists),
   check('password', '· La contraseña debe tener por lo menos 8 caracteres').isLength({ min: 8 }),
-  check('passwordConfirmation').custom(passwordConfirmation),
+  check('password').custom(passwordConfirmation),
   check('email').custom(emailExists),
   validateFields
 ], userController.usersPost)
