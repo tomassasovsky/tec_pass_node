@@ -6,6 +6,7 @@ const { emailExists, rutExists, phoneExists, userExists } = require('../helpers/
 const { validateFields, validateJWT } = require('../middlewares/middlewares')
 
 const { rutValid } = require('../helpers/rut-validator')
+const { passwordConfirmation } = require('../helpers/password-confirmation')
 
 const router = Router()
 
@@ -27,6 +28,7 @@ router.post('/', [
   check('phone', '· El teléfono es obligatorio').notEmpty(),
   check('phone').custom(phoneExists),
   check('password', '· La contraseña debe tener por lo menos 8 caracteres').isLength({ min: 8 }),
+  check('passwordConfirmation').custom(passwordConfirmation),
   check('email').custom(emailExists),
   validateFields
 ], userController.usersPost)
