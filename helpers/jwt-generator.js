@@ -5,11 +5,11 @@ const generateJWT = (uid = '') => {
     const payload = { uid }
 
     jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: '4h'
+      expiresIn: '180d'
     }, (err, token) => {
       if (err) {
         console.log(err);
-        return reject('Unable to generate token')
+        return reject('No se ha podido generar su credencial')
       }
 
       return resolve(token)

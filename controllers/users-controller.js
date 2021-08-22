@@ -57,7 +57,7 @@ const usersPatch = async (req = request, res = response) => {
 
   if (!user) {
     return res.status(404).json({
-      message: 'User not found'
+      message: 'No se ha encontrado un usuario con este correo'
     });
   }
 
@@ -65,7 +65,7 @@ const usersPatch = async (req = request, res = response) => {
 
   if (!validPassword) {
     return res.status(401).json({
-      message: 'Password is not correct'
+      message: 'La contraseña es incorrecta'
     });
   }
 

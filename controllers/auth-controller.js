@@ -12,13 +12,13 @@ const login = async (req = request, res = response) => {
 
     if (!user) {
       return res.status(400).send({
-        message: "Email is not registered"
+        message: "El correo no está registrado"
       });
     }
 
     if (!user.status) {
       return res.status(400).send({
-        message: "This user has been disabled"
+        message: "El usuario ha sido desactivado"
       });
     }
 
@@ -26,13 +26,13 @@ const login = async (req = request, res = response) => {
 
     if (!validPassword) {
       return res.status(400).send({
-        message: "The password is not correct"
+        message: "La contraseña es incorrecta"
       });
     }
 
     const token = await generateJWT(user.id);
 
-    res.json({
+    res.status(200).json({
       user,
       token,
     });
@@ -40,7 +40,7 @@ const login = async (req = request, res = response) => {
   } catch (err) {
     console.log(err);
     return res.status(500).send({
-      message: "Something went wrong"
+      message: "Algo salió mal"
     });
   }
 }

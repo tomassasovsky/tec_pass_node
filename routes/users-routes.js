@@ -11,16 +11,16 @@ router.get('/', userController.usersGet)
 
 router.put('/:id', [
   validateJWT,
-  check('id', 'The parameter `id` is not valid').isMongoId(),
+  check('id', 'El identificador de usuario no es válido').isMongoId(),
   check('id').custom(userExists),
   validateFields
 ], userController.usersPut)
 
 router.post('/', [
   // check for errors and return them if there are any:
-  check('name', 'The parameter \'name\' is required').notEmpty(),
-  check('email', 'The parameter \'email\' is not valid').isEmail(),
-  check('password', 'The parameter \'password\' is required and must contain at least 8 characters').isLength({ min: 8 }),
+  check('name', 'El nombre es obligatorio').notEmpty(),
+  check('email', 'El correo es obligatorio').isEmail(),
+  check('password', 'La contraseña es obligatorio').isLength({ min: 8 }),
   check('email').custom(emailExists),
   validateFields
 ], userController.usersPost)
@@ -31,8 +31,8 @@ router.delete('/', [
 ], userController.usersDelete)
 
 router.patch('/', [
-  check('email', 'Email is required').isEmail(),
-  check('password', 'Password is required').not().isEmpty(),
+  check('email', 'El correo es obligatorio').isEmail(),
+  check('password', 'El correo es obligatorio').not().isEmpty(),
   validateFields
 ], userController.usersPatch)
 

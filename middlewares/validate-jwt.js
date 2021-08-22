@@ -8,7 +8,7 @@ const validateJWT = async (req = request, res = response, next) => {
 
   if (!token) {
     return res.status(401).json({
-      message: 'Missing token'
+      message: 'El token es obligatorio'
     })
   }
 
@@ -19,13 +19,13 @@ const validateJWT = async (req = request, res = response, next) => {
 
     if (!user) {
       return res.status(401).json({
-        message: 'User not found'
+        message: 'El usuario no existe'
       })
     }
 
     if (!user.status) {
       return res.status(401).json({
-        message: 'User is not active',
+        message: 'El usuario está desactivado',
       });
     }
 
@@ -34,7 +34,7 @@ const validateJWT = async (req = request, res = response, next) => {
     next();
   } catch (error) {
     return res.status(401).json({
-      message: 'Invalid token'
+      message: 'El token no es válido'
     });
   }
 }
