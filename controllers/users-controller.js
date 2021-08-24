@@ -2,7 +2,7 @@ const { response, request } = require('express');
 const bcryptjs = require('bcryptjs')
 
 const User = require('../models/user-model');
-const { generateJWT } = require('../helpers/jwt-generator');
+const { buildError, signAccessToken, signRefreshToken } = require('../helpers/helpers');
 
 const usersGet = async (req = request, res = response) => {
   const { limit = 5, from = 1 } = req.query;
@@ -27,22 +27,18 @@ const usersPost = async (req = request, res = response) => {
   // save on database
   await user.save();
 
-  const token = await generateJWT(user.id);
+  const refreshToken = await signRefreshToken(user.id);
+  const accessToken = await signAccessToken(user.id);
 
-  res.json({ user, token })
+  res.json({ user, refreshToken, accessToken })
 }
 
 const usersPut = async (req = request, res = response) => {
-  const { id } = req.params;
-  const { _id, password, email, ...newData } = req.body;
+  const { _id, ...newData } = req.body;
 
-  if (password) {
-    // hash password
-    const salt = bcryptjs.genSaltSync();
-    newData.password = bcryptjs.hashSync(password, salt);
-  }
+  // const user = await req.user.update(newData);
 
-  const user = await User.findByIdAndUpdate(id, newData);
+  const user = await User.findByIdAndUpdate(req.user._id, newData);
 
   res.status(200).json({ user })
 }
@@ -59,27 +55,13 @@ const usersPatch = async (req = request, res = response) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    return res.status(404).json({
-      errors: [
-        {
-          msg: 'No se ha encontrado un usuario con este correo',
-          param: 'email',
-        }
-      ]
-    });
+    return res.status(404).json(buildError('No se ha encontrado un usuario con este correo', 'email'))
   }
 
   const validPassword = bcryptjs.compareSync(password, user.password);
 
   if (!validPassword) {
-    return res.status(401).json({
-      errors: [
-        {
-          msg: 'La contraseña es incorrecta',
-          param: 'password',
-        }
-      ]
-    });
+    return res.status(403).json(buildError('La contraseña es incorrecta', 'password'))
   }
 
   const updatedUser = await User.findOneAndUpdate({ email }, { status: true });
