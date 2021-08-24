@@ -34,6 +34,19 @@ const login = async (req = request, res = response) => {
   }
 }
 
+const logout = async (req = request, res = response) => {
+  const refreshToken = req.header('Authorization').split(' ')[1]
+
+  try {
+    const token = await RefreshToken.findOneAndDelete({ token: refreshToken });
+    if (!token) return res.status(401).send(buildError('El token de refresco no está registrado', 'refreshToken'));
+    res.status(200).json({ token });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send(buildError('Algo salió mal', 'refreshToken'));
+  }
+}
+
 const token = async (req = request, res = response) => {
   const refreshToken = req.header('Authorization').split(' ')[1]
 
@@ -59,5 +72,6 @@ const token = async (req = request, res = response) => {
 
 module.exports = {
   login,
+  logout,
   token,
 }

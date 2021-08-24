@@ -18,7 +18,6 @@ const RefreshTokenSchema = Schema({
 
 RefreshTokenSchema.methods.toJSON = function () {
   const { __v, _id, ...refreshToken } = this.toObject();
-  refreshToken.uid = _id;
   return refreshToken;
 }
 

@@ -69,6 +69,7 @@ const verifyRefreshToken = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
+    console.log(error)
     return res.status(403).json(buildError('El token no es válido', 'token'))
   }
 }
@@ -95,6 +96,7 @@ const verifyAccessToken = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
+    console.log(error)
     return res.status(403).json(buildError('El token no es válido', 'token'))
   }
 }
