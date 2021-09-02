@@ -1,5 +1,5 @@
 const { Router } = require('express')
-const { check, body } = require('express-validator')
+const { check } = require('express-validator')
 
 const userController = require('../controllers/users-controller')
 const { validateFields } = require('../middlewares/validate-fields')
@@ -16,7 +16,10 @@ const {
 
 const router = Router()
 
-router.get('/', userController.usersGet)
+router.get('/', [
+  verifyAccessToken,
+  validateFields
+], userController.usersGet)
 
 router.post('/', [
   // check for errors and return them if there are any:
