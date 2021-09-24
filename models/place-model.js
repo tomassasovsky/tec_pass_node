@@ -1,9 +1,9 @@
 const { Schema, model } = require("mongoose");
 
 const PlaceSchema = Schema({
-  query: {
+  address: {
     type: String,
-    required: true
+    required: [true, "La dirección es obligatoria"],
   },
   floor: {
     type: String,
@@ -11,11 +11,14 @@ const PlaceSchema = Schema({
   additionalInfo: {
     type: String,
   },
+  name: {
+    type: String,
+    required: [true, "El nombre es obligatorio"],
+  }
 });
 
 PlaceSchema.methods.toJSON = function () {
-  const { __v, _id, ...place } = this.toObject();
-  place.id = _id;
+  const { __v, ...place } = this.toObject();
   return place;
 }
 

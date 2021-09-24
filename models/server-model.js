@@ -9,6 +9,7 @@ class Server {
 
 		this.usersPath = '/api/users';
 		this.authPath = '/api/auth';
+		this.invitePath = '/api/invite';
 
 		this.connectToDatabase();
 		this.middlewares();
@@ -28,6 +29,7 @@ class Server {
 	routes() {
 		this.app.use(this.authPath, require('../routes/auth-routes'));
 		this.app.use(this.usersPath, require('../routes/users-routes'));
+		this.app.use(this.invitePath, require('../routes/invite-routes'));
 	}
 
 	listen() {
