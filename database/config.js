@@ -13,7 +13,6 @@ const dbConnection = async () => {
 
     console.log('MongoDB connection successful.');
   } catch (err) {
-    console.log(err);
     throw new Error('Error connecting to database: ' + err);
   }
 }

@@ -30,7 +30,7 @@ const signRefreshToken = (user = User) => {
 
         const refreshToken = new RefreshToken({ token, user })
         await refreshToken.save()
-        
+
       } catch (error) {
         console.log(error)
       }
@@ -41,8 +41,17 @@ const signRefreshToken = (user = User) => {
 }
 
 const verifyRefreshToken = async (req = request, res = response, next) => {
-  const token = req.header('Authorization').split(' ')[1]
+  const auth = req.header('Authorization')
+  if (!auth) {
+    return res.status(401).json(buildError('El token es obligatorio', 'token'))
+  }
 
+  const parts = auth.split(' ')
+  if (!parts) {
+    return res.status(401).json(buildError('El token es obligatorio', 'token'))
+  }
+
+  const token = parts[1]
   if (!token) {
     return res.status(401).json(buildError('El token es obligatorio', 'token'))
   }
@@ -78,8 +87,17 @@ const verifyRefreshToken = async (req = request, res = response, next) => {
 }
 
 const verifyAccessToken = async (req, res, next) => {
-  const token = req.header('Authorization').split(' ')[1]
+  const auth = req.header('Authorization')
+  if (!auth) {
+    return res.status(401).json(buildError('El token es obligatorio', 'token'))
+  }
 
+  const parts = auth.split(' ')
+  if (!parts) {
+    return res.status(401).json(buildError('El token es obligatorio', 'token'))
+  }
+
+  const token = parts[1]
   if (!token) {
     return res.status(401).json(buildError('El token es obligatorio', 'token'))
   }

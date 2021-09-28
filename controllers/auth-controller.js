@@ -1,10 +1,10 @@
-const { request, response } = require("express")
-const bcryptjs = require("bcryptjs");
+const { request, response } = require('express')
+const bcryptjs = require('bcryptjs');
 
-const User = require("../models/user-model");
-const RefreshToken = require("../models/refresh-token-model");
+const User = require('../models/user-model');
+const RefreshToken = require('../models/refresh-token-model');
 
-const { buildError, signRefreshToken, signAccessToken } = require("../helpers/helpers");
+const { buildError, signRefreshToken, signAccessToken } = require('../helpers/helpers');
 
 const login = async (req = request, res = response) => {
   const { email, password } = req.body;
@@ -40,7 +40,7 @@ const logout = async (req = request, res = response) => {
   const token = req.header('Authorization').split(' ')[1]
 
   try {
-    const result = await RefreshToken.findOneAndDelete({ token }).populate("user");
+    const result = await RefreshToken.findOneAndDelete({ token }).populate('user');
     if (!result) return res.status(401).send(buildError('El token de refresco no está registrado', 'refreshToken'));
 
     const user = result.user.toJSON();
