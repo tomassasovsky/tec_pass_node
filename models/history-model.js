@@ -1,19 +1,19 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const HistorySchema = Schema({
   action: {
     type: String,
     required: true,
-    enum: ["OPEN", "CLOSE"],
+    enum: ['OPEN', 'CLOSE'],
   },
   user: {
     type: Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true,
   },
   door: {
     type: Schema.Types.ObjectId,
-    ref: "Door",
+    ref: 'Door',
     required: true,
   },
 }, {

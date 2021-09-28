@@ -1,6 +1,8 @@
 const express = require('express')
 const cors = require('cors')
-const { dbConnection } = require('../database/config')
+const { dbConnection } = require('../database/config');
+
+require('mongoose');
 
 class Server {
 	constructor() {
@@ -17,7 +19,11 @@ class Server {
 	}
 
 	async connectToDatabase() {
-		await dbConnection();
+		try {
+			await dbConnection();
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	middlewares() {

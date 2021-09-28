@@ -1,31 +1,30 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const InviteSchema = Schema({
   active: {
     type: Boolean,
     default: true,
   },
+  inviteRecipients: {
+    type: [Schema.Types.ObjectId],
+    required: true,
+    ref: 'InviteRecipient',
+  },
   from: {
     type: Schema.Types.ObjectId,
     required: true,
     ref: 'User',
   },
-  to: {
-    type: [Schema.Types.ObjectId],
-    required: false,
-    ref: 'User',
-  },
-  place: {
+  project: {
     type: Schema.Types.ObjectId,
-    ref: 'Place',
+    ref: 'Project',
   },
   dateFrom: {
-    type: Schema.Types.Date,
+    type: Date,
     default: Date.now,
   },
   dateTo: {
-    type: String,
-    required: true,
+    type: Date,
   },
   message: {
     type: String,

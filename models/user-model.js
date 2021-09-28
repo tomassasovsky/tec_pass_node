@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const UserSchema = Schema({
   name: {
@@ -31,13 +31,14 @@ const UserSchema = Schema({
     type: Boolean,
     default: true,
   },
-  doors: {
-    type: [Number],
+  projects: {
+    type: [Schema.Types.ObjectId],
+    ref: 'Project',
   },
   type: {
     type: String,
     default: 'USER',
-    enum: ['ADMIN', 'USER'],
+    enum: ['PROJECT_ADMIN', 'USER', 'TECHNICIAN'],
   },
 });
 
