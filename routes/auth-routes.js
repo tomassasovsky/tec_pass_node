@@ -8,8 +8,10 @@ const { validateFields } = require('../middlewares/validate-fields')
 const router = Router()
 
 router.post('/login', [
-  check('email', '· El correo es un campo requerido').isEmail(),
+  check('email', '· El correo es un campo requerido').not().isEmpty(),
+  check('email', '· El correo no es válido').isEmail(),
   check('password', '· La contraseña es un campo requerido').not().isEmpty(),
+  check('password', '· La contraseña debe tener al menos 8 caracteres').isLength({ min: 8 }),
   validateFields,
 ], login)
 

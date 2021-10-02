@@ -39,12 +39,12 @@ const sendInvite = async (req = request, res = response) => {
   try {
     if (pushRecipients.length > 0) {
       const client = new OneSignal.Client(process.env.ONE_SIGNAL_APP_ID, process.env.ONE_SIGNAL_API_KEY);
-      if (!client) return res.status(500).json(buildError('No se ha podido conectarse con la aplicación de OneSignal', 'server'));
+      if (!client) return res.status(500).json(buildError('· No se ha podido conectarse con la aplicación de OneSignal', 'server'));
 
       const notification = buildNotificationInvite(req, pushRecipients)
       const response = await client.createNotification(notification);
 
-      if (response.statusCode !== 200) return res.status(500).json(buildError(`No se ha podido enviar la notificación push`, 'server'));
+      if (response.statusCode !== 200) return res.status(500).json(buildError(`· No se ha podido enviar la notificación push`, 'server'));
     }
 
     await sendEmailInvite(req, emailRecepients)
@@ -67,7 +67,7 @@ const sendInvite = async (req = request, res = response) => {
 
     return res.status(200).json({ invite });
   } catch (e) {
-    return res.status(500).json(buildError('Error del servidor: ' + e, 'server'));
+    return res.status(500).json(buildError('· Error del servidor: ' + e, 'server'));
   }
 }
 

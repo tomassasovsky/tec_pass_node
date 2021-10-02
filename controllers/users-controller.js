@@ -49,10 +49,10 @@ const usersPatch = async (req = request, res = response) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
-  if (!user) return res.status(404).json(buildError('No se ha encontrado un usuario con este correo', 'email'))
+  if (!user) return res.status(404).json(buildError('· No se ha encontrado un usuario con este correo', 'email'))
 
   const validPassword = bcryptjs.compareSync(password, user.password);
-  if (!validPassword) return res.status(403).json(buildError('La contraseña es incorrecta', 'password'))
+  if (!validPassword) return res.status(403).json(buildError('· La contraseña es incorrecta', 'password'))
 
   user.status = true;
   await user.save();

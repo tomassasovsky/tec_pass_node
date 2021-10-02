@@ -10,17 +10,17 @@ const login = async (req = request, res = response) => {
   try {
     const user = await User.findOne({ email });
 
-    if (!user) return res.status(401).send(buildError('El correo no está registrado', 'email'));
-    if (!user.status) return res.status(401).send(buildError('El usuario ha sido desactivado', 'email'));
+    if (!user) return res.status(401).send(buildError('· El correo no está registrado', 'email'));
+    if (!user.status) return res.status(401).send(buildError('· El usuario ha sido desactivado', 'email'));
 
     const validPassword = await bcryptjs.compare(password, user.password);
-    if (!validPassword) return res.status(401).send(buildError('La contraseña es incorrecta', 'password'));
+    if (!validPassword) return res.status(401).send(buildError('· La contraseña es incorrecta', 'password'));
 
     const refreshToken = await signRefreshToken(user._id);
     const accessToken = await signAccessToken(user._id);
 
-    if (!refreshToken) return res.status(500).send(buildError('El refreshToken no se ha podido generar', 'server'));
-    if (!accessToken) return res.status(500).send(buildError('El refreshToken no se ha podido generar', 'server'));
+    if (!refreshToken) return res.status(500).send(buildError('· El refreshToken no se ha podido generar', 'server'));
+    if (!accessToken) return res.status(500).send(buildError('· El refreshToken no se ha podido generar', 'server'));
 
     res.status(200).json({
       user,
@@ -29,7 +29,7 @@ const login = async (req = request, res = response) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(500).send(buildError('Algo salió mal', 'server'));
+    return res.status(500).send(buildError('· Algo salió mal', 'server'));
   }
 }
 
@@ -41,7 +41,7 @@ const logout = async (req = request, res = response) => {
     res.status(200).send();
   } catch (err) {
     console.log(err);
-    return res.status(500).send(buildError('Algo salió mal', 'server'));
+    return res.status(500).send(buildError('· Algo salió mal', 'server'));
   }
 }
 
@@ -51,12 +51,12 @@ const token = async (req = request, res = response) => {
   try {
     const accessToken = await signAccessToken(refreshToken.user);
 
-    if (!accessToken) return res.status(401).send(buildError('El token de acceso no se ha podido generar', 'refreshToken'));
+    if (!accessToken) return res.status(401).send(buildError('· El token de acceso no se ha podido generar', 'refreshToken'));
 
     res.status(200).json({ accessToken });
   } catch (err) {
     console.log(err);
-    return res.status(500).send(buildError('Algo salió mal', 'refreshToken'));
+    return res.status(500).send(buildError('· Algo salió mal', 'refreshToken'));
   }
 }
 
