@@ -1,4 +1,4 @@
-const { validateRut } = require("@cksharma11/rut-validator");
+const { validateRut } = require('@cksharma11/rut-validator');
 
 const rutValid = async (rut = '') => {
   const isValid = validateRut(rut);

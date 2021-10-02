@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const UserSchema = Schema({
   name: {
@@ -31,11 +31,19 @@ const UserSchema = Schema({
     type: Boolean,
     default: true,
   },
+  projects: {
+    type: [Schema.Types.ObjectId],
+    ref: 'Project',
+  },
+  type: {
+    type: String,
+    default: 'USER',
+    enum: ['PROJECT_ADMIN', 'USER', 'TECHNICIAN'],
+  },
 });
 
 UserSchema.methods.toJSON = function () {
-  const { __v, password, _id, ...user } = this.toObject();
-  user.uid = _id;
+  const { __v, password, ...user } = this.toObject();
   return user;
 }
 

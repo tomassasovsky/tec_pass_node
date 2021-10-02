@@ -1,20 +1,27 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const InviteSchema = Schema({
+  active: {
+    type: Boolean,
+    default: true,
+  },
+  inviteRecipients: {
+    type: [Schema.Types.ObjectId],
+    required: true,
+    ref: 'InviteRecipient',
+  },
   from: {
     type: Schema.Types.ObjectId,
+    required: true,
     ref: 'User',
   },
-  to: {
+  project: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
-  },
-  place: {
-    type: Schema.Types.ObjectId,
-    ref: 'Place',
+    ref: 'Project',
   },
   dateFrom: {
     type: Date,
+    default: Date.now,
   },
   dateTo: {
     type: Date,
@@ -22,19 +29,15 @@ const InviteSchema = Schema({
   message: {
     type: String,
   },
-  active: {
-    type: Boolean,
-    default: true,
+  pushId: {
+    type: String,
   },
-  received: {
-    type: Boolean,
-    default: false,
-  },
+}, {
+  timestamps: true,
 });
 
 InviteSchema.methods.toJSON = function () {
-  const { __v, _id, ...invite } = this.toObject();
-  invite.id = _id;
+  const { __v, ...invite } = this.toObject();
   return invite;
 }
 

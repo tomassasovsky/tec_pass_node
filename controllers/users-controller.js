@@ -6,7 +6,7 @@ const { buildError, signAccessToken, signRefreshToken } = require('../helpers/he
 
 const usersGet = async (req = request, res = response) => {
   const user = req.user;
-  res.json(User);
+  res.json({ user });
 }
 
 const usersPost = async (req = request, res = response) => {
@@ -25,17 +25,24 @@ const usersPost = async (req = request, res = response) => {
 }
 
 const usersPut = async (req = request, res = response) => {
-  const { _id, ...newData } = req.body;
+  const { password, email, projects, rut, ...newData } = req.body;
+  const { user } = req;
 
-  const user = await User.findByIdAndUpdate(req.user._id, newData);
+  Object.assign(user, newData);
+  await user.save();
+  
+  await user.populate('projects').execPopulate();
 
-  res.status(200).json(user)
+  res.status(200).json({ user })
 }
 
 const usersDelete = async (req = request, res = response) => {
-  const user = await User.findByIdAndUpdate(req.user.id, { status: false });
+  const { user } = req;
 
-  res.status(200).json(user);
+  user.status = false;
+  await user.save();
+
+  res.status(200).json({ user });
 }
 
 const usersPatch = async (req = request, res = response) => {
@@ -47,9 +54,10 @@ const usersPatch = async (req = request, res = response) => {
   const validPassword = bcryptjs.compareSync(password, user.password);
   if (!validPassword) return res.status(403).json(buildError('La contraseña es incorrecta', 'password'))
 
-  const updatedUser = await User.findOneAndUpdate({ email }, { status: true });
+  user.status = true;
+  await user.save();
 
-  res.status(200).json(updatedUser);
+  res.status(200).json({ user });
 }
 
 module.exports = {

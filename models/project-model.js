@@ -1,24 +1,25 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const ProjectSchema = Schema({
   address: {
     type: String,
-    required: true
+    required: [true, 'La dirección es obligatoria'],
   },
   additionalInfo: {
     type: String,
   },
-  places: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Place'
-    },
-  ]
+  name: {
+    type: String,
+    required: [true, 'El nombre es obligatorio'],
+  },
+  doors: {
+    type: [Schema.Types.ObjectId],
+    ref: 'Door',
+  },
 });
 
 ProjectSchema.methods.toJSON = function () {
-  const { __v, _id, ...project } = this.toObject();
-  project.id = _id;
+  const { __v, ...project } = this.toObject();
   return project;
 }
 

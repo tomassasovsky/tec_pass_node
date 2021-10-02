@@ -1,5 +1,5 @@
-const { Schema, model } = require("mongoose");
-const User = require("./user-model");
+const { Schema, model } = require('mongoose');
+const User = require('./user-model');
 
 const RefreshTokenSchema = Schema({
   token: {
@@ -12,7 +12,7 @@ const RefreshTokenSchema = Schema({
   },
   user: {
     type: Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
   }
 });
 
